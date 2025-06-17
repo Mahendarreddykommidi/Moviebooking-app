@@ -5,7 +5,7 @@ import { Menu, MenuIcon, Search, SearchIcon, Ticket, TicketPlus, X, XIcon } from
 import { useClerk, UserButton, useUser } from "@clerk/clerk-react";
 
 const Navbar = () => {
-  const [menuOpen, setMenuOpen] = useState(true);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const { openSignIn } = useClerk();
   const { user } = useUser();
