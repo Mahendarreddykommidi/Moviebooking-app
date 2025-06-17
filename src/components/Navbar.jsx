@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { assets } from "../assets/assets";
-import { Menu, MenuIcon, Search, SearchIcon, Ticket, TicketPlus, X, XIcon } from "lucide-react";
+import { Menu,  Search, SearchIcon, X, XIcon } from "lucide-react";
 import { useClerk, UserButton, useUser } from "@clerk/clerk-react";
 
 const Navbar = () => {
@@ -104,6 +104,7 @@ const Navbar = () => {
           <UserButton>
             <UserButton.MenuItems>
               <UserButton.Action label="My bookings">
+                
               
               </UserButton.Action>
             </UserButton.MenuItems>
