@@ -20,8 +20,8 @@ const Hero = () => {
         </h1>
         </div>
         <div>
-          <p className="flex items-center gap-4 mt-5">
-            Action | Adventure | Sci-Fi <span className="flex gap-2"><Calendar/>2018 <TimerIcon/>2h 8m</span>
+          <p className="flex items-center gap-2 sm:gap-4 mt-5 max-sm:text-sm">
+            Action | Adventure | Sci-Fi <span className="flex items-center gap-1 sm:gap-2 md:gap-3"><Calendar/>2018 <TimerIcon/>2h 8m</span>
           </p>
         </div>
         <p className="font-medium text-gray-300 max-w-md mt-5">In a post-apocalyptic world where cities ride on wheels and consume each other to survive, two people meet in London and try to stop a conspiracy</p>

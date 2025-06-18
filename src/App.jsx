@@ -24,12 +24,13 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/movies" element={<Movies />} />
+         <Route path="/favourites" element={<Favorite />} />
         <Route path="/movies/:id" element={<Moviedetails />} />
         <Route path="/movies/:id/:date" element={<Seatlayout />} />
         <Route path="/my-bookings" element={<Mybookings />} />
     
-        <Route path="/favorite" element={<Favorite />} />
-        <Route path="/adimn/*" element={<Layout/>}>
+      
+        <Route path="/admin/*" element={<Layout/>}>
           <Route index element={<Dashboard/>}/>  
           <Route path="add-shows"  element={<Addshows/>}/>
           <Route path="list-shows"  element={<Listshows/>}/>
