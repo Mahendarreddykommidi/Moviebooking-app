@@ -29,9 +29,9 @@ body{
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;     /* Firefox */
 }
-@media (max-width<650px) {
-  
-  
+
+::-webkit-calendar-picker-indicator{
+  filter: invert(1);
 }
 
 

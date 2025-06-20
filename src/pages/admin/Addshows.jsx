@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import Title from "../../components/admin/Title";
 import axios from "axios";
 import { dummyShowsData } from "../../assets/assets";
-import { CheckIcon, StarIcon } from "lucide-react";
+import { CheckIcon, DeleteIcon, StarIcon } from "lucide-react";
 import kconverter from "../../lib/Kconverter";
-import Loading from "../../components/Loading"
+import Loading from "../../components/Loading";
 
 const Addshows = () => {
   const [nowPlayingmovies, Setnowplayingmovies] = useState([]);
@@ -12,7 +12,7 @@ const Addshows = () => {
   const [dateTimeselection, SetdateTimeSelection] = useState({});
   const [dateTimeinput, setDateTimeinput] = useState("");
   const [Showprice, Setshowprice] = useState("");
-  const currency="$"
+  const currency = "$";
 
   const fetchNowPlayingMovies = async () => {
     Setnowplayingmovies(dummyShowsData);
@@ -21,37 +21,32 @@ const Addshows = () => {
   useEffect(() => {
     fetchNowPlayingMovies();
   }, []);
-  const handleDateTimeAdd=()=>{
-    if(!dateTimeinput) return;
-    const {date,time}=dateTimeinput.split("T")
-    if(!date || !time) return
+  const handleDateTimeAdd = () => {
+    if (!dateTimeinput) return;
+    const [date, time] = dateTimeinput.trim().split("T");
+    if (!date || !time) return;
 
-    SetdateTimeSelection((prev)=>{
-      const times=prev[date] || []
-      if(!times.includes(time)){
-        return {...prev,[date]:[...times,time]}
+    SetdateTimeSelection((prev) => {
+      const times = prev[date] || [];
+      if (!times.includes(time)) {
+        return { ...prev, [date]: [...times, time] };
       }
-      return prev
-    })
-
-  }
-    const handleRemoveTime=()=>{
-      SetdateTimeSelection((prev)=>{
-        const filteredTimes=prev[date].filter((t)=>t!==time);
-        if(filteredTimes.length===0){
-          const {[date]:_,...rest}=prev
-          return rest
-        }
-      })
+      return prev;
+    });
+  };
+  const handleRemoveTime = (date, time) => {
+    SetdateTimeSelection((prev) => {
+      const filteredTimes = prev[date].filter((t) => t !== time);
+      if (filteredTimes.length === 0) {
+        const { [date]: _, ...rest } = prev;
+        return rest;
+      }
       return {
         ...prev,
-        [date]:filteredTimes
-      }
-
-    
-
-  }
-
+        [date]: filteredTimes,
+      };
+    });
+  };
 
   return nowPlayingmovies.length > 0 ? (
     <div className="">
@@ -64,7 +59,7 @@ const Addshows = () => {
             <div
               key={movie._id}
               className={`relative max-w-40 cursor-pointer group-hover:not-hover:opacity-40 hover:translate y-1 transition duration-300`}
-              onClick={()=>Setselectedmovie(movie._id)}
+              onClick={() => Setselectedmovie(movie._id)}
             >
               <div className="relative rounded-lg overflow-hidden">
                 <img
@@ -79,16 +74,14 @@ const Addshows = () => {
                   </p>
                   <p>{kconverter(movie.vote_count)}votes</p>
                 </div>
-                {selectedMovie ===movie._id &&(
+                {selectedMovie === movie._id && (
                   <div className="absolute top-2 right-2 flex items-center justify-center bg-primary h-6 w-6 rounded">
-                    <CheckIcon className="w-4 h-4 text-white" strokeWidth={2.5}/>
-
+                    <CheckIcon
+                      className="w-4 h-4 text-white"
+                      strokeWidth={2.5}
+                    />
                   </div>
-
-                )
-
-
-                }
+                )}
               </div>
             </div>
           ))}
@@ -98,24 +91,64 @@ const Addshows = () => {
         <label className="block text-sm font-medium mb-2">Show price</label>
         <div className="inline-flex items-center gap-2 border border-gray-600 px-3 py-2 rounded-md">
           <p className="text-gray-400 text-sm">{currency}</p>
-          <input onChange={()=>Setshowprice(e.target.value)} type="number" min={0} value={Showprice} placeholder="enter show price" className="outline-npne" />
+          <input
+            onChange={() => Setshowprice(e.target.value)}
+            type="number"
+            min={0}
+            value={Showprice}
+            placeholder="enter show price"
+            className="outline-npne"
+          />
         </div>
-
       </div>
-           <div className="mt-6">
-        <label className="block text-sm font-medium mb-2">Select date and Time</label>
+      <div className="mt-6">
+        <label className="block text-sm font-medium mb-2">
+          Select date and Time
+        </label>
         <div className="inline-flex items-center gap-2 border border-gray-600 px-3 py-2 rounded-md">
           <p className="text-gray-400 text-sm">{currency}</p>
-          <input onChange={()=>setDateTimeinput(e.target.value)} type="datetime-local" value={dateTimeinput}  placeholder="" className="outline-npne" />
-          <button className="bg-primary/80 text-white px-3 py-2 text-sm rounded-lg hover:bg-primary cursor-pointer">
-          Add time
+          <input
+            onChange={(e) => setDateTimeinput(e.target.value)}
+            type="datetime-local"
+            value={dateTimeinput}
+            placeholder=""
+            className="outline-npne"
+          />
+          <button
+            onClick={()=>handleDateTimeAdd()}
+            className="bg-primary/80 text-white px-3 py-2 text-sm rounded-lg hover:bg-primary cursor-pointer"
+          >
+            Add time
           </button>
-          
         </div>
- 
-
       </div>
-
+      {Object.keys(dateTimeselection).length > 0 && (
+        <div className="mt-6">
+          <h2 className="mb-2">Selected Date-Time</h2>
+          <ul className="space-y-3">
+            {Object.entries(dateTimeselection).map(([date, times]) => (
+              <li key={date}>
+                <div className="font-medium">{date}</div>
+                <div className="flex flex-wrap gap-2 mt-1 text-sm">
+                  {times.map((time) => (
+                    <div
+                      key={time}
+                      className="border border-primary px-2 py-1 flex items-center rounded"
+                    >
+                      <span>{time}</span>
+                      <DeleteIcon
+                        onClick={() => handleRemoveTime(date, time)}
+                        width={15}
+                        className="ml-2 text-red-500 hover:text-red-700"
+                      />
+                    </div>
+                  ))}
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
   ) : (
     <Loading />
